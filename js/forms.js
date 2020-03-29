@@ -24,22 +24,69 @@ function createFormSubmit(formId, commands) {
 
   $("#" + formId).submit(function (event) {
     event.preventDefault();
-
-    var command = [];
-    var splittedCommand = commands.linux.split(" ");
-    splittedCommand.forEach(comd => {
-      if (comd.startsWith("/")) {
-        var ele = $("#" + comd.substr(1));
-        if (ele && ele.val()) {
-          command.push(comd + '="' + ele.val() + '"');
-        }
-      } else {
-        command.push(comd);
-      }
-    });
-
-    download(command.join(" "), "test.txt", "txt/plain");
+    var output = $("#output").val();
+    if (output == "linux") {
+      generateCommandLinux(commands.linux);
+    } else if (output == 'windows') {
+      generateCommandWindows(commands.windows);
+    } else if (output == 'mac') {
+      generateCommandMac(commands.mac);
+    }
   });
+}
+
+function generateCommandLinux(commandLine) {
+  var command = [];
+  var splittedCommand = commandLine.split(" ");
+  splittedCommand.forEach(comd => {
+    if (comd.startsWith("/")) {
+      var ele = $("#" + comd.substr(1));
+      if (ele && ele.val()) {
+        command.push(comd + '="' + ele.val() + '"');
+      }
+    } else {
+      command.push(comd);
+    }
+  });
+
+  var fileText = ["#!/bin/bash", command.join(" ")]
+  download(fileText.join("\n"), "command.sh", "txt/plain");
+}
+
+function generateCommandWindows(commandLine) {
+  var command = [];
+  var splittedCommand = commandLine.split(" ");
+  splittedCommand.forEach(comd => {
+    if (comd.startsWith("/")) {
+      var ele = $("#" + comd.substr(1));
+      if (ele && ele.val()) {
+        command.push(comd + '="' + ele.val() + '"');
+      }
+    } else {
+      command.push(comd);
+    }
+  });
+
+  var fileText = ["@ECHO OFF", "Pushd \"%~dp0\"", command.join(" "), "popd", "PAUSE"]
+  download(fileText.join("\n"), "command.bat", "txt/plain");
+}
+
+function generateCommandMac(commandLine) {
+  var command = [];
+  var splittedCommand = commandLine.split(" ");
+  splittedCommand.forEach(comd => {
+    if (comd.startsWith("/")) {
+      var ele = $("#" + comd.substr(1));
+      if (ele && ele.val()) {
+        command.push(comd + '="' + ele.val() + '"');
+      }
+    } else {
+      command.push(comd);
+    }
+  });
+
+  var fileText = ["#! /bin/bash", command.join(" ")]
+  download(fileText.join("\n"), "command.command", "txt/plain");
 }
 
 function createForm(formId, fields) {
@@ -59,7 +106,9 @@ function createForm(formId, fields) {
           field.label,
           field.placeholder,
           field.required,
-          field.description
+          field.description,
+          field.validate,
+          field.maxlength
         );
         break;
       case "select":
@@ -78,9 +127,7 @@ function createForm(formId, fields) {
     if (field.change) {
       addOnChange(
         field.id,
-        field.change.showIds,
-        field.change.requiredIds,
-        field.change.value
+        field.change
       );
     }
   });
@@ -113,7 +160,7 @@ function createSelect(formId, id, name, label, required, options, description) {
   }
 }
 
-function createText(formId, id, name, label, placeholder, required, description) {
+function createText(formId, id, name, label, placeholder, required, description, validate, maxlength) {
   createDiv("div_" + id, formId, required);
   createLabel(id, label, "div_" + id);
   $("<input/>")
@@ -123,6 +170,8 @@ function createText(formId, id, name, label, placeholder, required, description)
       name: name,
       placeholder: placeholder,
       required: required,
+      pattern: validate,
+      maxlength: maxlength,
       class: "form-control"
     })
     .appendTo("#div_" + id);
@@ -159,25 +208,27 @@ function createHelp(help, appendTo) {
     .appendTo("#" + appendTo);
 }
 
-function addOnChange(elementId, showIds, requiredIds, value) {
+function addOnChange(elementId, changeFields) {
   $("#" + elementId).change(function () {
-    if ($("#" + elementId).val() == value) {
-      requiredIds.forEach(eleId => {
-        $("#div_" + eleId).addClass("required");
-        $("#" + eleId).prop("required", true);
-      });
-      showIds.forEach(eleId => {
-        $("#div_" + eleId).show();
-      });
-    } else {
-      requiredIds.forEach(eleId => {
-        $("#div_" + eleId).removeClass("required");
-        $("#" + eleId).prop("required", false);
-      });
-      showIds.forEach(eleId => {
-        $("#div_" + eleId).hide();
-      });
-    }
+    changeFields.forEach(changeField => {
+      if (this.value == changeField.value) {
+        changeField.requiredIds.forEach(eleId => {
+          $("#div_" + eleId).addClass("required");
+          $("#" + eleId).prop("required", true);
+        });
+        changeField.showIds.forEach(eleId => {
+          $("#div_" + eleId).show();
+        });
+      } else {
+        changeField.requiredIds.forEach(eleId => {
+          $("#div_" + eleId).removeClass("required");
+          $("#" + eleId).prop("required", false);
+        });
+        changeField.showIds.forEach(eleId => {
+          $("#div_" + eleId).hide();
+        });
+      }
+    });
   });
 }
 

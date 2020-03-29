@@ -4,78 +4,45 @@ var data = [{
     description: "Archives file or directory and save it in a specified directory.",
     cmd: {
       linux: "RoboArchitect -zip /srcDir /destFile /log",
-      windows: ""
+      windows: "RoboArchitect.exe -zip /srcDir /destFile /log",
+      mac: "RoboArchitect -zip /srcDir /destFile /log"
     },
     fields: [{
         label: "Source file or folder",
         id: "srcDir",
         description: "Directory or file that will be archived to a .zip file.",
         type: "text",
-        required: "true",
+        required: true,
+        command: "/srcDir",
         default: "",
         placeholder: "C:\\testFile.zip"
       },
       {
         label: "Destination zip",
         id: "destFile",
+        description: ".zip file in which all selected files and directories will be placed. If the file exists, it will be overwritten.	",
+        validate: ".*.zip$",
         type: "text",
-        required: "true",
+        required: true,
         command: "/destFile",
         default: "",
         placeholder: "C:\\testFile.zip"
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
-      },
-      {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        required: "true",
-        command: "/destFile",
-        placeholder: "C:\\testFile.zip",
-        default: ""
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: "true",
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
+        required: false,
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log"
       },
       {
         label: "Ouput",
         id: "output",
         type: "select",
-        required: "true",
+        required: true,
         options: [{
             value: "windows",
             text: "Windows"
@@ -83,6 +50,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ]
       }
@@ -94,14 +65,16 @@ var data = [{
     description: "Unzip .zip file to a specified directory.",
     cmd: {
       linux: "RoboArchitect -unzip /srcFile /destDir /log",
-      windows: ""
+      windows: "RoboArchitect.exe -zip /srcFile /destDir /log",
+      mac: "RoboArchitect -zip /srcFile /destDir /log"
     },
     fields: [{
-        label: "Source file ",
+        label: "Source file",
         id: "srcFile",
         description: ".zip file with files or directories.",
+        validate: ".*.zip$",
         type: "text",
-        required: "true",
+        required: true,
         default: "",
         placeholder: "file.zip, zip/example.zip"
       },
@@ -110,56 +83,19 @@ var data = [{
         id: "destDir",
         type: "text",
         description: "The directory where the zip file will be unpacked. If the same files exist in this directory, they will be overwritten.",
-        required: "true",
+        required: true,
         default: "",
         placeholder: "unzipped, example/directory"
-      },
-      {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
       },
       {
         label: "Log file",
         id: "log",
         type: "text",
-        required: "true",
-        command: "/destFile",
-        placeholder: "C:\\testFile.zip",
-        default: ""
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: "true",
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        required: false,
+        command: "/log",
+        placeholder: "logs.log",
+        default: "text.txt, log.txt"
       },
       {
         label: "Ouput",
@@ -184,25 +120,26 @@ var data = [{
     description: "Converts .csv file to .xlsx file.",
     cmd: {
       linux: "RoboArchitect -convert /srcFile /destFile /delim /sheetname /log",
-      windows: ""
+      windows: "RoboArchitect.exe -convert /srcFile /destFile /delim /sheetname /log",
+      mac: "RoboArchitect -convert /srcFile /destFile /delim /sheetname /log"
     },
     fields: [{
         label: "Source file ",
         id: "srcFile",
         description: "A .csv or .xlsx file to be converted to a .xlsx or .csv file, respectively.",
+        validate: ".*.csv$|.*.xlsx$",
         default: "",
         type: "text",
-        required: "true",
-        default: "",
-        placeholder: "file.zip, zip/example.zip"
+        required: true,
+        placeholder: "file.csv, file.txt, file.xlsx, dir/example.txt"
       },
       {
-        label: "Destination directory",
-        id: "destDir",
+        label: "Destination file",
+        id: "destFile",
         type: "text",
-        description: "File in which the source file would be formatted. If the file exists, it will be overwritten.",
-        required: "false",
-        default: "",
+        description: "File in which the source file would be formatted. If the file exists, it will be overwritten.	",
+        required: false,
+        default: "File.xlsx Or File.csv depending on /srcFile",
         placeholder: "file.xlsx, file.csv, file.txt, converted/file.csv"
       },
       {
@@ -210,56 +147,29 @@ var data = [{
         id: "delim",
         type: "text",
         description: 'Any single character file separator. Common delimiters are "," or "|" .	',
-        required: "false",
+        maxlength: "1",
+        required: false,
         default: "",
         placeholder: ", ; |"
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
+        label: "Sheet name",
+        id: "sheetname",
+        type: "text",
+        description: "The name of the .xlsx sheet needed to sign the .xlsx file or to convert the specified sheet to a .csv file.	",
+        required: false,
+        default: "Sheet1",
+        placeholder: "ABCD, SheetName1, Unnamed"
       },
       {
         label: "Log file",
         id: "log",
         type: "text",
-        required: "true",
-        command: "/destFile",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
+        required: false,
+        command: "/log",
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: "true",
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -284,64 +194,27 @@ var data = [{
     description: "Encrypts user password.",
     cmd: {
       linux: "RoboArchitect -password /passwordFile /log",
-      windows: ""
+      windows: "RoboArchitect.exe -password /passwordFile /log",
+      mac: "RoboArchitect -password /passwordFile /log",
     },
     fields: [{
         label: "Password file ",
         id: "passwordFile",
+        type: "text",
         description: "File in which your encrypted password would be stored. If the file exists, it will be overwritten.",
         default: "",
-        type: "text",
-        required: "true",
-        default: "",
+        required: true,
         placeholder: "password.txt, encrypted/file.txt"
-      },
-      {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
       },
       {
         label: "Log file",
         id: "log",
         type: "text",
-        required: "true",
-        command: "/destFile",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        required: false,
+        command: "/log",
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: "true",
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -366,15 +239,15 @@ var data = [{
     description: "Connect to specified url with required username and password, then get a response and save it to a file.",
     cmd: {
       linux: "RoboArchitect -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log",
-      windows: ""
+      windows: "RoboArchitect.exe -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log",
+      mac: "RoboArchitect -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log"
     },
     fields: [{
         label: "Destination file ",
         id: "destFile",
         description: "File in which the response from the web service will be saved. If the file exists, it will be overwritten. If this parameter is not specified, the result will be displayed on the console.",
-        default: "",
         type: "text",
-        required: true,
+        required: false,
         default: "Console output",
         placeholder: "file.txt, response.json"
       },
@@ -384,7 +257,8 @@ var data = [{
         description: "Configuration file in which field such as url should be passed.",
         type: "text",
         required: true,
-        default: "Console output",
+        default: "",
+        validate: ".*.properties$|.*.txt$",
         placeholder: "config.properties, config.txt"
       },
       {
@@ -409,10 +283,34 @@ var data = [{
         label: "Request type",
         id: "reqType",
         description: "Change the http method. If this parameter is not specified, then the GET method will be used by default.	",
-        type: "text",
+        type: "select",
+        options: [{
+            value: "GET",
+            text: "GET"
+          },
+          {
+            value: "HEAD",
+            text: "HEAD"
+          },
+          {
+            value: "POST",
+            text: "POST"
+          },
+          {
+            value: "PUT",
+            text: "PUT"
+          },
+          {
+            value: "PATCH",
+            text: "PATCH"
+          },
+          {
+            value: "DELETE",
+            text: "DELETE"
+          }
+        ],
         required: false,
         default: "GET",
-        placeholder: "GET, HEAD, POST, PUT, PATCH, DELETE"
       },
       {
         label: "Source file",
@@ -430,7 +328,7 @@ var data = [{
         type: "text",
         required: false,
         default: "",
-        placeholder: "Any text with \n new lines and \t tabs"
+        placeholder: "Any text with \\n new lines and \\t tabs"
       },
       {
         label: "Media Type",
@@ -442,51 +340,13 @@ var data = [{
         placeholder: "application/json, text/html, multipart/form-data and etc"
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
-      },
-      {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         type: "text",
-        required: true,
-        command: "/destFile",
+        required: false,
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: true,
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -511,7 +371,8 @@ var data = [{
     description: "Json path is needed to filter a JSON file and take from there just a needed part. It takes the needful part of a JSON by a pattern",
     cmd: {
       linux: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log",
-      windows: ""
+      windows: "RoboArchitect.exe -jsonpath /srcFile /jsonPath /destFile /log",
+      mac: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log"
     },
     fields: [{
         label: "Source file",
@@ -541,51 +402,13 @@ var data = [{
         placeholder: "file.txt, response.json"
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
-      },
-      {
         label: "Log file",
         id: "log",
         type: "text",
-        required: true,
-        command: "/destFile",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        required: false,
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: true,
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -610,12 +433,13 @@ var data = [{
     description: "You could send an email with or without an attached file to another person.",
     cmd: {
       linux: "RoboArchitect -email /subject /body /config /passwordFile /log",
-      windows: ""
+      windows: "RoboArchitect.exe -email /subject /body /config /passwordFile /log",
+      mac: "RoboArchitect -email /subject /body /config /passwordFile /log"
     },
     fields: [{
         label: "Subject",
         id: "subject",
-        description: "Subject of an email.	",
+        description: "Subject of an email.",
         default: "",
         type: "text",
         required: false,
@@ -624,19 +448,19 @@ var data = [{
       {
         label: "Body",
         id: "body",
-        description: "Body of an email. It could have new lines and tab characters. New line should be \n and tab should be \t.",
+        description: "Body of an email. It could have new lines and tab characters. New line should be \\n and tab should be \\t.",
         type: "text",
-        required: true,
+        required: false,
         default: "",
-        placeholder: "Text of an email with new lines \n and tabs \t."
+        placeholder: "Text of an email with new lines \\n and tabs \\t."
       },
       {
-        label: "Config",
+        label: "Configuration file",
         id: "config",
         description: "Config file with email details more detail.	",
         type: "text",
         required: true,
-        default: "Console output",
+        default: "",
         placeholder: "config.properties, config.txt"
       },
       {
@@ -649,51 +473,13 @@ var data = [{
         placeholder: "password.txt, directory/file.txt"
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
-      },
-      {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        required: true,
-        command: "/destFile",
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: true,
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
+        required: false,
+        default: "logs.log",
+        placeholder: "text.txt, log.txt"
       },
       {
         label: "Ouput",
@@ -707,6 +493,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ]
       }
@@ -718,7 +508,8 @@ var data = [{
     description: "Allows a user to run SQL against a .csv/.txt file.",
     cmd: {
       linux: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines	/log",
-      windows: ""
+      windows: "RoboArchitect.exe -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines	/log",
+      mac: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines	/log"
     },
     fields: [{
         label: "Source file",
@@ -745,25 +536,34 @@ var data = [{
         type: "text",
         required: false,
         default: ",",
+        maxlength: "1",
         placeholder: ", ; |"
       },
       {
         label: "Destination file",
         id: "destFile",
-        description: "File in which the result of the SQL query will be written. If the file exists, it will be overwritten.	",
+        description: "File in which the result of the SQL query will be written. If the file exists, it will be overwritten.",
         type: "text",
         required: false,
-        default: "password in a config file.",
-        placeholder: "password.txt, directory/file.txt"
+        default: "Console output",
+        placeholder: "text.txt"
       },
       {
         label: "Suppress Headers",
         id: "suppressHeaders",
         description: "Indicates if the first line of the file starts with data instead of the column headers.	",
-        type: "text",
+        type: "select",
         required: false,
+        options: [{
+            value: "false",
+            text: "No"
+          },
+          {
+            value: "true",
+            text: "Yes"
+          }
+        ],
         default: "false",
-        placeholder: "false, true"
       },
       {
         label: "Skip lines",
@@ -784,51 +584,13 @@ var data = [{
         placeholder: "0, 1, 2, 3, 4 and etc."
       },
       {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
-          value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
-      },
-      {
         label: "Log file",
         id: "log",
         type: "text",
-        required: true,
-        command: "/destFile",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        required: false,
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: true,
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -842,6 +604,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ]
       }
@@ -853,7 +619,8 @@ var data = [{
     description: "Allows a user to create SQLite database, create table or add data to it by using file with delimiter.",
     cmd: {
       linux: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header	/log",
-      windows: ""
+      windows: "RoboArchitect.exe -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header	/log",
+      mac: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header	/log"
     },
     fields: [{
         label: "Connection",
@@ -871,6 +638,9 @@ var data = [{
         required: true,
         type: "select",
         options: [{
+            value: "",
+            text: ""
+          }, {
             value: "createDB",
             text: "createDB"
           },
@@ -883,12 +653,22 @@ var data = [{
             text: "queryDB"
           }
         ],
+        change: [{
+          value: "importTable",
+          showIds: ["srcFile", "table", "delim", "mode"],
+          requiredIds: ["srcFile", "table"]
+        }, {
+          value: "queryDB",
+          showIds: ["query", "return", "destFile", "header"],
+          requiredIds: ["query", "return", "destFile", "header"]
+        }],
         default: "",
       },
       {
         label: "Database name",
         id: "db",
         description: "The expected name and place where the SQL database will be created. The name should ends on .db.	",
+        validate: ".*.db$",
         type: "text",
         required: true,
         default: "",
@@ -898,6 +678,7 @@ var data = [{
         label: "Source file",
         id: "srcFile",
         description: "A delimited file is needed to create or add data from it to the SQLite database. Used in importTable option.",
+        validate: ".*.csv$|.*.txt$",
         type: "text",
         required: true,
         default: "",
@@ -919,7 +700,8 @@ var data = [{
         type: "text",
         required: false,
         default: ",",
-        placeholder: "0, ; |"
+        placeholder: "0, ; |",
+        maxlength: "1"
       },
       {
         label: "Mode",
@@ -929,9 +711,6 @@ var data = [{
         default: "APPEND",
         type: "select",
         options: [{
-            value: "",
-            text: ""
-          }, {
             value: "APPEND",
             text: "APPEND"
           },
@@ -958,9 +737,6 @@ var data = [{
         required: false,
         default: "FALSE(except queryDB option it is TRUE)	",
         options: [{
-            value: "",
-            text: ""
-          }, {
             value: "yes",
             text: "Yes"
           },
@@ -975,6 +751,7 @@ var data = [{
         id: "destFile",
         description: "File in which the result of the SQL query will be written. If the file exists, it will be overwritten. Used in queryDB option.",
         type: "text",
+        validate: ".*.txt$",
         required: false,
         default: "Console output",
         placeholder: "file.txt, directory/file.txt"
@@ -987,64 +764,21 @@ var data = [{
         required: false,
         default: "FALSE",
         options: [{
-            value: "",
-            text: ""
-          }, {
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ]
-      },
-      {
-        label: "Custom log file",
-        id: "customlogfile",
-        type: "select",
-        options: [{
-            value: "yes",
-            text: "Yes"
-          },
-          {
-            value: "no",
-            text: "No"
-          }
-        ],
-        change: {
+          value: "no",
+          text: "No"
+        }, {
           value: "yes",
-          showIds: ["log", "loglevel"],
-          requiredIds: ["log", "loglevel"]
-        }
+          text: "Yes"
+        }]
       },
       {
         label: "Log file",
         id: "log",
         type: "text",
-        required: true,
-        command: "/destFile",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        required: false,
         placeholder: "text.txt, log.txt",
         default: "logs.log"
-      },
-      {
-        label: "Log level",
-        id: "loglevel",
-        type: "select",
-        required: true,
-        options: [{
-            value: "INFO",
-            text: "Info"
-          },
-          {
-            value: "DEBUG",
-            text: "Debug"
-          },
-          {
-            value: "TRACE",
-            text: "Trace"
-          }
-        ]
       },
       {
         label: "Ouput",
@@ -1058,6 +792,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ]
       }
