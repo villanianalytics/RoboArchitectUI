@@ -15,7 +15,8 @@ var data = [{
         required: true,
         command: "/srcDir",
         default: "",
-        placeholder: "C:\\testFile.zip"
+        placeholder: "C:\Program Files, example.txt",
+        visible: true
       },
       {
         label: "Destination zip",
@@ -26,7 +27,27 @@ var data = [{
         required: true,
         command: "/destFile",
         default: "",
-        placeholder: "C:\\testFile.zip"
+        placeholder: "C:\\testFile.zip",
+        visible: true
+
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
@@ -36,7 +57,28 @@ var data = [{
         required: false,
         command: "/log",
         placeholder: "logs.log",
-        default: "logs.log"
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -55,7 +97,8 @@ var data = [{
             value: "mac",
             text: "Mac"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -76,7 +119,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "file.zip, zip/example.zip"
+        placeholder: "file.zip, zip/example.zip",
+        visible: true
       },
       {
         label: "Destination directory",
@@ -85,17 +129,57 @@ var data = [{
         description: "The directory where the zip file will be unpacked. If the same files exist in this directory, they will be overwritten.",
         required: true,
         default: "",
-        placeholder: "unzipped, example/directory"
+        placeholder: "unzipped, example/directory",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         required: false,
         command: "/log",
         placeholder: "logs.log",
-        default: "text.txt, log.txt"
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -110,7 +194,8 @@ var data = [{
             value: "linux",
             text: "Linux"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -131,7 +216,8 @@ var data = [{
         default: "",
         type: "text",
         required: true,
-        placeholder: "file.csv, file.txt, file.xlsx, dir/example.txt"
+        placeholder: "file.csv, file.txt, file.xlsx, dir/example.txt",
+        visible: true
       },
       {
         label: "Destination file",
@@ -140,7 +226,8 @@ var data = [{
         description: "File in which the source file would be formatted. If the file exists, it will be overwritten.	",
         required: false,
         default: "File.xlsx Or File.csv depending on /srcFile",
-        placeholder: "file.xlsx, file.csv, file.txt, converted/file.csv"
+        placeholder: "file.xlsx, file.csv, file.txt, converted/file.csv",
+        visible: true
       },
       {
         label: "Delimiter",
@@ -150,7 +237,8 @@ var data = [{
         maxlength: "1",
         required: false,
         default: "",
-        placeholder: ", ; |"
+        placeholder: ", ; |",
+        visible: true
       },
       {
         label: "Sheet name",
@@ -159,17 +247,57 @@ var data = [{
         description: "The name of the .xlsx sheet needed to sign the .xlsx file or to convert the specified sheet to a .csv file.	",
         required: false,
         default: "Sheet1",
-        placeholder: "ABCD, SheetName1, Unnamed"
+        placeholder: "ABCD, SheetName1, Unnamed",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
-        type: "text",
         description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
+        type: "text",
         required: false,
         command: "/log",
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -184,7 +312,8 @@ var data = [{
             value: "linux",
             text: "Linux"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -204,17 +333,57 @@ var data = [{
         description: "File in which your encrypted password would be stored. If the file exists, it will be overwritten.",
         default: "",
         required: true,
-        placeholder: "password.txt, encrypted/file.txt"
+        placeholder: "password.txt, encrypted/file.txt",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         required: false,
         command: "/log",
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -229,7 +398,8 @@ var data = [{
             value: "linux",
             text: "Linux"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -249,7 +419,8 @@ var data = [{
         type: "text",
         required: false,
         default: "Console output",
-        placeholder: "file.txt, response.json"
+        placeholder: "file.txt, response.json",
+        visible: true
       },
       {
         label: "Configuration file ",
@@ -259,7 +430,8 @@ var data = [{
         required: true,
         default: "",
         validate: ".*.properties$|.*.txt$",
-        placeholder: "config.properties, config.txt"
+        placeholder: "config.properties, config.txt",
+        visible: true
       },
       {
         label: "Json path",
@@ -268,7 +440,8 @@ var data = [{
         type: "text",
         required: false,
         default: "",
-        placeholder: "$.id"
+        placeholder: "$.id",
+        visible: true
       },
       {
         label: "Password file",
@@ -277,7 +450,8 @@ var data = [{
         type: "text",
         required: false,
         default: "password in a config file.",
-        placeholder: "password.txt, directory/file.txt"
+        placeholder: "password.txt, directory/file.txt",
+        visible: true
       },
       {
         label: "Request type",
@@ -285,6 +459,9 @@ var data = [{
         description: "Change the http method. If this parameter is not specified, then the GET method will be used by default.	",
         type: "select",
         options: [{
+            value: "",
+            text: ""
+          }, {
             value: "GET",
             text: "GET"
           },
@@ -311,6 +488,12 @@ var data = [{
         ],
         required: false,
         default: "GET",
+        change: [{
+          value: ["POST", "PUT"],
+          showIds: ["srcFile", "body"],
+          requiredIds: []
+        }],
+        visible: true
       },
       {
         label: "Source file",
@@ -319,7 +502,8 @@ var data = [{
         type: "text",
         required: false,
         default: "",
-        placeholder: "table.db, text.txt, image.png"
+        placeholder: "table.db, text.txt, image.png",
+        visible: false
       },
       {
         label: "Body",
@@ -328,7 +512,8 @@ var data = [{
         type: "text",
         required: false,
         default: "",
-        placeholder: "Any text with \\n new lines and \\t tabs"
+        placeholder: "Any text with \\n new lines and \\t tabs",
+        visible: false
       },
       {
         label: "Media Type",
@@ -336,17 +521,58 @@ var data = [{
         description: "Type of the files which would be sent to a web service.",
         type: "text",
         required: false,
-        default: "application/json	",
-        placeholder: "application/json, text/html, multipart/form-data and etc"
+        default: "application/json",
+        placeholder: "application/json, text/html, multipart/form-data and etc",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
         required: false,
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -361,7 +587,8 @@ var data = [{
             value: "linux",
             text: "Linux"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -381,7 +608,8 @@ var data = [{
         default: "",
         type: "text",
         required: true,
-        placeholder: "file.json, file.txt"
+        placeholder: "file.json, file.txt",
+        visible: true
       },
       {
         label: "Json Path",
@@ -390,7 +618,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "$.id"
+        placeholder: "$.id",
+        visible: true
       },
       {
         label: "Destination file",
@@ -399,16 +628,57 @@ var data = [{
         type: "text",
         required: false,
         default: "Console output",
-        placeholder: "file.txt, response.json"
+        placeholder: "file.txt, response.json",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         required: false,
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -423,7 +693,8 @@ var data = [{
             value: "linux",
             text: "Linux"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -443,7 +714,8 @@ var data = [{
         default: "",
         type: "text",
         required: false,
-        placeholder: "Subject of a letter"
+        placeholder: "Subject of a letter",
+        visible: true
       },
       {
         label: "Body",
@@ -452,7 +724,8 @@ var data = [{
         type: "text",
         required: false,
         default: "",
-        placeholder: "Text of an email with new lines \\n and tabs \\t."
+        placeholder: "Text of an email with new lines \\n and tabs \\t.",
+        visible: true
       },
       {
         label: "Configuration file",
@@ -461,7 +734,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "config.properties, config.txt"
+        placeholder: "config.properties, config.txt",
+        visible: true
       },
       {
         label: "Password file",
@@ -470,7 +744,26 @@ var data = [{
         type: "text",
         required: false,
         default: "password in a config file.",
-        placeholder: "password.txt, directory/file.txt"
+        placeholder: "password.txt, directory/file.txt",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
@@ -478,8 +771,30 @@ var data = [{
         description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
         required: false,
+        command: "/log",
+        placeholder: "logs.log",
         default: "logs.log",
-        placeholder: "text.txt, log.txt"
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -498,7 +813,8 @@ var data = [{
             value: "mac",
             text: "Mac"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -518,7 +834,8 @@ var data = [{
         default: "",
         type: "text",
         required: true,
-        placeholder: "file.txt, file.csv"
+        placeholder: "file.txt, file.csv",
+        visible: true
       },
       {
         label: "Query",
@@ -527,7 +844,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "SELECT * from table"
+        placeholder: "SELECT * from table",
+        visible: true
       },
       {
         label: "Delimiter",
@@ -537,7 +855,8 @@ var data = [{
         required: false,
         default: ",",
         maxlength: "1",
-        placeholder: ", ; |"
+        placeholder: ", ; |",
+        visible: true
       },
       {
         label: "Destination file",
@@ -564,6 +883,7 @@ var data = [{
           }
         ],
         default: "false",
+        visible: true
       },
       {
         label: "Skip lines",
@@ -572,7 +892,8 @@ var data = [{
         type: "text",
         required: false,
         default: "0",
-        placeholder: "0, 1, 2, 3, 4 and etc."
+        placeholder: "0, 1, 2, 3, 4 and etc.",
+        visible: true
       },
       {
         label: "Skip Data Lines",
@@ -581,16 +902,57 @@ var data = [{
         type: "text",
         required: false,
         default: "0",
-        placeholder: "0, 1, 2, 3, 4 and etc."
+        placeholder: "0, 1, 2, 3, 4 and etc.",
+        visible: true
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         required: false,
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -609,7 +971,8 @@ var data = [{
             value: "mac",
             text: "Mac"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   },
@@ -629,7 +992,8 @@ var data = [{
         default: "SQLITE",
         type: "text",
         required: false,
-        placeholder: "SQLITE"
+        placeholder: "SQLITE",
+        visible: true
       },
       {
         label: "Query",
@@ -654,15 +1018,16 @@ var data = [{
           }
         ],
         change: [{
-          value: "importTable",
+          value: ["importTable"],
           showIds: ["srcFile", "table", "delim", "mode"],
           requiredIds: ["srcFile", "table"]
         }, {
-          value: "queryDB",
+          value: ["queryDB"],
           showIds: ["query", "return", "destFile", "header"],
           requiredIds: ["query", "return", "destFile", "header"]
         }],
         default: "",
+        visible: true
       },
       {
         label: "Database name",
@@ -672,7 +1037,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "shop.db, directory/shop.db"
+        placeholder: "shop.db, directory/shop.db",
+        visible: true
       },
       {
         label: "Source file",
@@ -682,7 +1048,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "file.csv, file.txt"
+        placeholder: "file.csv, file.txt",
+        visible: false
       },
       {
         label: "Table",
@@ -691,7 +1058,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "table, ABCD"
+        placeholder: "table, ABCD",
+        visible: false
       },
       {
         label: "Delimiter",
@@ -701,7 +1069,8 @@ var data = [{
         required: false,
         default: ",",
         placeholder: "0, ; |",
-        maxlength: "1"
+        maxlength: "1",
+        visible: false
       },
       {
         label: "Mode",
@@ -718,7 +1087,8 @@ var data = [{
             value: "OVERWRITE",
             text: "OVERWRITE"
           }
-        ]
+        ],
+        visible: false
       },
       {
         label: "Query",
@@ -727,7 +1097,8 @@ var data = [{
         type: "text",
         required: true,
         default: "",
-        placeholder: "query.txt, SELECT * from table"
+        placeholder: "query.txt, SELECT * from table",
+        visible: false
       },
       {
         label: "Return",
@@ -744,7 +1115,8 @@ var data = [{
             value: "no",
             text: "No"
           }
-        ]
+        ],
+        visible: false
       },
       {
         label: "Destination File",
@@ -754,7 +1126,8 @@ var data = [{
         validate: ".*.txt$",
         required: false,
         default: "Console output",
-        placeholder: "file.txt, directory/file.txt"
+        placeholder: "file.txt, directory/file.txt",
+        visible: false
       },
       {
         label: "Header",
@@ -769,16 +1142,57 @@ var data = [{
         }, {
           value: "yes",
           text: "Yes"
-        }]
+        }],
+        visible: false
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
       },
       {
         label: "Log file",
         id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
         type: "text",
-        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.	",
         required: false,
-        placeholder: "text.txt, log.txt",
-        default: "logs.log"
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
       },
       {
         label: "Ouput",
@@ -797,7 +1211,8 @@ var data = [{
             value: "mac",
             text: "Mac"
           }
-        ]
+        ],
+        visible: true
       }
     ]
   }

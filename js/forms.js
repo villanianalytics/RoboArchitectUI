@@ -108,7 +108,8 @@ function createForm(formId, fields) {
           field.required,
           field.description,
           field.validate,
-          field.maxlength
+          field.maxlength,
+          field.visible
         );
         break;
       case "select":
@@ -119,7 +120,8 @@ function createForm(formId, fields) {
           field.label,
           field.required,
           field.options,
-          field.description
+          field.description,
+          field.visible
         );
         break;
     }
@@ -133,7 +135,7 @@ function createForm(formId, fields) {
   });
 }
 
-function createSelect(formId, id, name, label, required, options, description) {
+function createSelect(formId, id, name, label, required, options, description, visible) {
   createDiv("div_" + id, formId, required);
   createLabel(id, label, "div_" + id);
   $("<select/>")
@@ -158,9 +160,13 @@ function createSelect(formId, id, name, label, required, options, description) {
   if (description) {
     createHelp(description, "div_" + id);
   }
+
+  if (!visible) {
+    $("#div_" + id).hide();
+  }
 }
 
-function createText(formId, id, name, label, placeholder, required, description, validate, maxlength) {
+function createText(formId, id, name, label, placeholder, required, description, validate, maxlength, visible) {
   createDiv("div_" + id, formId, required);
   createLabel(id, label, "div_" + id);
   $("<input/>")
@@ -175,8 +181,13 @@ function createText(formId, id, name, label, placeholder, required, description,
       class: "form-control"
     })
     .appendTo("#div_" + id);
+
   if (description) {
     createHelp(description, "div_" + id);
+  }
+
+  if (!visible) {
+    $("#div_" + id).hide();
   }
 }
 
@@ -211,7 +222,7 @@ function createHelp(help, appendTo) {
 function addOnChange(elementId, changeFields) {
   $("#" + elementId).change(function () {
     changeFields.forEach(changeField => {
-      if (this.value == changeField.value) {
+      if (changeField.value.includes(this.value)) {
         changeField.requiredIds.forEach(eleId => {
           $("#div_" + eleId).addClass("required");
           $("#" + eleId).prop("required", true);
@@ -226,10 +237,20 @@ function addOnChange(elementId, changeFields) {
         });
         changeField.showIds.forEach(eleId => {
           $("#div_" + eleId).hide();
+          clearField($("#" + eleId));
         });
       }
     });
   });
+}
+
+function clearField(ele) {
+  if (ele.is("input")) {
+    ele.val("");
+  }
+  if (ele.is("select")) {
+    ele.prop('selectedIndex', 0);
+  }
 }
 
 function download(data, filename, type) {
