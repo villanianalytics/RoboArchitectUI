@@ -3,9 +3,9 @@ var data = [{
     id: "zip",
     description: "Archives file or directory and save it in a specified directory.",
     cmd: {
-      linux: "RoboArchitect -zip /srcDir /destFile /log",
-      windows: "RoboArchitect.exe -zip /srcDir /destFile /log",
-      mac: "RoboArchitect -zip /srcDir /destFile /log"
+      linux: "RoboArchitect -zip /srcDir /destFile /log /loglevel",
+      windows: "RoboArchitect.exe -zip /srcDir /destFile /log /loglevel",
+      mac: "RoboArchitect -zip /srcDir /destFile /log /loglevel"
     },
     fields: [{
         label: "Source file or folder",
@@ -107,9 +107,9 @@ var data = [{
     id: "unzip",
     description: "Unzip .zip file to a specified directory.",
     cmd: {
-      linux: "RoboArchitect -unzip /srcFile /destDir /log",
-      windows: "RoboArchitect.exe -zip /srcFile /destDir /log",
-      mac: "RoboArchitect -zip /srcFile /destDir /log"
+      linux: "RoboArchitect -unzip /srcFile /destDir /log /loglevel",
+      windows: "RoboArchitect.exe -zip /srcFile /destDir /log /loglevel",
+      mac: "RoboArchitect -zip /srcFile /destDir /log /loglevel"
     },
     fields: [{
         label: "Source file",
@@ -182,7 +182,7 @@ var data = [{
         visible: false,
       },
       {
-        label: "Ouput",
+        label: "Output",
         id: "output",
         type: "select",
         required: "true",
@@ -193,6 +193,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ],
         visible: true
@@ -211,8 +215,8 @@ var data = [{
     fields: [{
         label: "Source file ",
         id: "srcFile",
-        description: "A .csv or .xlsx file to be converted to a .xlsx or .csv file, respectively.",
-        validate: ".*.csv$|.*.xlsx$",
+        description: "A .csv or .xlsx or .txt file to be converted to a .xlsx or .csv or .txt file, respectively.",
+        validate: ".*.csv$|.*.xlsx$|.*.txt$",
         default: "",
         type: "text",
         required: true,
@@ -311,6 +315,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ],
         visible: true
@@ -334,6 +342,7 @@ var data = [{
         default: "",
         required: true,
         placeholder: "password.txt, encrypted/file.txt",
+        validate: ".*.txt$",
         visible: true
       },
       {
@@ -397,6 +406,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ],
         visible: true
@@ -408,21 +421,11 @@ var data = [{
     id: "connect",
     description: "Connect to specified url with required username and password, then get a response and save it to a file.",
     cmd: {
-      linux: "RoboArchitect -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log",
-      windows: "RoboArchitect.exe -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log",
-      mac: "RoboArchitect -connect /destFile /config /jsonPath /passwordFile /reqType	/srcFile /body /mediaType /log"
+      linux: "RoboArchitect -connect /destFile /config /jsonPath /query /delimiter /passwordFile /reqType	/srcFile /body /mediaType /log /loglevel",
+      windows: "RoboArchitect.exe -connect /destFile /config /jsonPath /query /delimiter /passwordFile /reqType	/srcFile /body /mediaType /log /loglevel",
+      mac: "RoboArchitect -connect /destFile /config /jsonPath /query /delimiter /passwordFile /reqType	/srcFile /body /mediaType /log /loglevel"
     },
     fields: [{
-        label: "Destination file ",
-        id: "destFile",
-        description: "File in which the response from the web service will be saved. If the file exists, it will be overwritten. If this parameter is not specified, the result will be displayed on the console.",
-        type: "text",
-        required: false,
-        default: "Console output",
-        placeholder: "file.txt, response.json",
-        visible: true
-      },
-      {
         label: "Configuration file ",
         id: "config",
         description: "Configuration file in which field such as url should be passed.",
@@ -431,16 +434,6 @@ var data = [{
         default: "",
         validate: ".*.properties$|.*.txt$",
         placeholder: "config.properties, config.txt",
-        visible: true
-      },
-      {
-        label: "Json path",
-        id: "jsonPath",
-        description: "Path to a specific part of the expected JSON response from the web server. If this parameter is not specified, the full response will be displayed.",
-        type: "text",
-        required: false,
-        default: "",
-        placeholder: "$.id",
         visible: true
       },
       {
@@ -454,14 +447,31 @@ var data = [{
         visible: true
       },
       {
+        label: "Media Type",
+        id: "mediaType",
+        description: "Type of the files which would be sent to a web service.",
+        type: "text",
+        required: false,
+        default: "application/json",
+        placeholder: "application/json, text/html, multipart/form-data and etc",
+        visible: true
+      },
+      {
+        label: "Destination file ",
+        id: "destFile",
+        description: "File in which the response from the web service will be saved. If the file exists, it will be overwritten. If this parameter is not specified, the result will be displayed on the console.",
+        type: "text",
+        required: false,
+        default: "Console output",
+        placeholder: "file.txt, response.json",
+        visible: true
+      },
+      {
         label: "Request type",
         id: "reqType",
         description: "Change the http method. If this parameter is not specified, then the GET method will be used by default.	",
         type: "select",
         options: [{
-            value: "",
-            text: ""
-          }, {
             value: "GET",
             text: "GET"
           },
@@ -516,14 +526,65 @@ var data = [{
         visible: false
       },
       {
-        label: "Media Type",
-        id: "mediaType",
-        description: "Type of the files which would be sent to a web service.",
+        label: "Filtering type",
+        id: "type",
+        description: "Type of filtering",
+        type: "select",
+        options: [{
+            value: "",
+            text: ""
+          }, {
+            value: "jsonPath",
+            text: "JsonPath"
+          },
+          {
+            value: "sql",
+            text: "SQL"
+          }
+        ],
+        required: true,
+        default: "GET",
+        change: [{
+          value: ["jsonPath"],
+          showIds: ["jsonPath"],
+          requiredIds: ["jsonPath"]
+        }, {
+          value: ["sql"],
+          showIds: ["query", "delimiter"],
+          requiredIds: ["query"]
+        }],
+        visible: true
+      },
+      {
+        label: "Json path",
+        id: "jsonPath",
+        description: "Path to a specific part of the expected JSON response from the web server. If this parameter is not specified, the full response will be displayed.",
         type: "text",
         required: false,
-        default: "application/json",
-        placeholder: "application/json, text/html, multipart/form-data and etc",
-        visible: true
+        default: "",
+        placeholder: "$.id",
+        visible: false
+      },
+      {
+        label: "Query",
+        id: "query",
+        description: "Sql query",
+        type: "text",
+        required: false,
+        default: "",
+        placeholder: "select * from table",
+        visible: false
+      },
+      {
+        label: "Delimiter",
+        id: "query",
+        description: "Delimiter",
+        type: "text",
+        required: false,
+        default: "",
+        placeholder: "| , ; , #",
+        maxlength: 1,
+        visible: false
       },
       {
         label: "Custom log file",
@@ -692,6 +753,10 @@ var data = [{
           {
             value: "linux",
             text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
           }
         ],
         visible: true
@@ -819,7 +884,7 @@ var data = [{
     ]
   },
   {
-    name: "Query delimiter",
+    name: "Query file",
     id: "querydelim",
     description: "Allows a user to run SQL against a .csv/.txt file.",
     cmd: {
@@ -1144,6 +1209,148 @@ var data = [{
           text: "Yes"
         }],
         visible: false
+      },
+      {
+        label: "Custom log file",
+        id: "customlogfile",
+        type: "select",
+        options: [{
+          value: "no",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        change: [{
+          value: ["yes"],
+          showIds: ["log", "loglevel"],
+          requiredIds: ["log", "loglevel"]
+        }],
+        visible: true
+      },
+      {
+        label: "Log file",
+        id: "log",
+        description: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file.",
+        type: "text",
+        required: false,
+        command: "/log",
+        placeholder: "logs.log",
+        default: "logs.log",
+        visible: false
+      },
+      {
+        label: "Log level",
+        id: "loglevel",
+        type: "select",
+        required: "true",
+        options: [{
+            value: "INFO",
+            text: "Info"
+          },
+          {
+            value: "DEBUG",
+            text: "Debug"
+          },
+          {
+            value: "TRACE",
+            text: "Trace"
+          }
+        ],
+        visible: false,
+      },
+      {
+        label: "Ouput",
+        id: "output",
+        type: "select",
+        required: true,
+        options: [{
+            value: "windows",
+            text: "Windows"
+          },
+          {
+            value: "linux",
+            text: "Linux"
+          },
+          {
+            value: "mac",
+            text: "Mac"
+          }
+        ],
+        visible: true
+      }
+    ]
+  },
+  {
+    name: "UnSql",
+    id: "unsql",
+    description: "Allows a user to run select queries in xml and json files",
+    cmd: {
+      linux: "RoboArchitect -unsql /srcFile /destFile /query /delimiter /headers /log /loglevel",
+      windows: "RoboArchitect.exe -unsql /srcFile /destFile /query /delimiter /headers /log /loglevel",
+      mac: "RoboArchitect -unsql /srcFile /destFile /query /delimiter /headers /log /loglevel"
+    },
+    fields: [{
+        label: "Source file",
+        id: "srcFile",
+        description: "A .json or .xml to be used as a source for the sql query.",
+        default: "",
+        type: "text",
+        required: true,
+        placeholder: "test.json",
+        validate: ".*.json$|.*.xml$",
+        visible: true
+      },
+      {
+        label: "Destination file",
+        id: "destFile",
+        description: "A .json or .xml or .txt file to used as a destination.",
+        default: "",
+        type: "text",
+        required: true,
+        placeholder: "test.txt",
+        validate: ".*.txt$|.*.json$|.*.xml$",
+        visible: true
+      },
+      {
+        label: "SQL Query",
+        id: "query",
+        description: "A select query to be performed against the source file",
+        default: "",
+        type: "text",
+        required: true,
+        placeholder: "select * from test",
+        validate: "select.*",
+        visible: true
+      },
+      {
+        label: "Delimiter",
+        id: "delimiter",
+        description: "This parameter will be used to delimiter results in a txt file.",
+        default: "",
+        type: "text",
+        required: false,
+        placeholder: ",, #",
+        validate: "select.*",
+        maxlength: "1",
+        visible: true
+      },
+      {
+        label: "Headers",
+        id: "headers",
+        description: "This parameter will be used to include the headers results in a txt file.",
+        default: "",
+        type: "select",
+        options: [{
+          value: "",
+          text: "No"
+        }, {
+          value: "yes",
+          text: "Yes"
+        }],
+        required: false,
+        maxlength: "1",
+        visible: true
       },
       {
         label: "Custom log file",

@@ -19,7 +19,7 @@ function createFormSubmit(formId, commands) {
       type: "submit",
       class: "btn btn-primary btn-lg btn-block"
     })
-    .text("Submit")
+    .text("Generate Script")
     .appendTo("#" + formId);
 
   $("#" + formId).submit(function (event) {
