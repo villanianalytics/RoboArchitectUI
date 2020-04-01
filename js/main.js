@@ -2,7 +2,10 @@ $(document).ready(function () {
   console.log(data);
   var formsMap = {};
   data.forEach(command => {
-    addCommand("commandOption", command.id, command.name);
+    addOption({
+      value: command.id
+    }, command.name, "#commandOption");
+
     formsMap[command.id] = command;
   });
 
@@ -13,7 +16,7 @@ $(document).ready(function () {
     var command = formsMap[this.value];
     if (command) {
       $("#commandHelp").text(command.description);
-      createForm(command.id, command.fields);
+      createForm(command.id, command.fields, "forms");
       createFormSubmit(command.id, command.cmd);
     }
   });
