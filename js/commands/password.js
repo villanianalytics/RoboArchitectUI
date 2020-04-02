@@ -3,9 +3,9 @@ var password = {
     id: "password",
     description: "Encrypts user password.",
     cmd: {
-        linux: "RoboArchitect -password /passwordFile /log",
-        windows: "RoboArchitect.exe -password /passwordFile /log",
-        mac: "RoboArchitect -password /passwordFile /log",
+        linux: "RoboArchitect -password /passwordFile /log /logLevel",
+        windows: "RoboArchitect.exe -password /passwordFile /log /logLevel",
+        mac: "RoboArchitect -password /passwordFile /log /logLevel",
     },
     fields: [{
             label: "Password file",

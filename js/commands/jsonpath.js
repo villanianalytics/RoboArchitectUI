@@ -3,9 +3,9 @@ var jsonpath = {
     id: "jsonpath",
     description: "Json path is needed to filter a JSON file and take from there just a needed part. It takes the needful part of a JSON by a pattern",
     cmd: {
-        linux: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log",
-        windows: "RoboArchitect.exe -jsonpath /srcFile /jsonPath /destFile /log",
-        mac: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log"
+        linux: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log /logLevel",
+        windows: "RoboArchitect.exe -jsonpath /srcFile /jsonPath /destFile /log /logLevel",
+        mac: "RoboArchitect -jsonpath /srcFile /jsonPath /destFile /log /logLevel"
     },
     fields: [{
             label: "Source file",

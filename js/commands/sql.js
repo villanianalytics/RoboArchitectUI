@@ -3,9 +3,9 @@ var sql = {
     id: "sql",
     description: "Allows a user to create SQLite database, create table or add data to it by using file with delimiter.",
     cmd: {
-        linux: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log",
-        windows: "RoboArchitect.exe -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log",
-        mac: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log"
+        linux: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log /logLevel",
+        windows: "RoboArchitect.exe -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log /logLevel",
+        mac: "RoboArchitect -sql /connection /op /db /srcFile /table /delim /mode /query /return /destFile /header /log /logLevel"
     },
     fields: [{
             label: "Connection",
@@ -61,7 +61,7 @@ var sql = {
             change: [{
                 value: ["importTable"],
                 showIds: ["srcFile", "table", "delim", "mode"],
-                requiredIds: ["srcFile", "table"]
+                requiredIds: ["srcFile", "table", "mode"]
             }, {
                 value: ["queryDB"],
                 showIds: ["query", "return", "destFile", "header"],
@@ -142,9 +142,14 @@ var sql = {
                 id: "mode",
                 name: "mode",
                 class: "form-control",
-                required: false,
+                required: true,
             },
             options: [{
+                    attributes: {
+                        value: ""
+                    },
+                    text: ""
+                }, {
                     attributes: {
                         value: "APPEND"
                     },
@@ -170,7 +175,6 @@ var sql = {
                 name: "query",
                 placeholder: "query.txt, SELECT * from table",
                 class: "form-control",
-                maxlength: "1",
                 required: false,
             },
             helper: "SQL request which will be used for getting specific data from a SQLite database. Used in queryDB option."

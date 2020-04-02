@@ -3,42 +3,11 @@ var email = {
     id: "email",
     description: "You could send an email with or without an attached file to another person.",
     cmd: {
-        linux: "RoboArchitect -email /subject /body /config /passwordFile /log",
-        windows: "RoboArchitect.exe -email /subject /body /config /passwordFile /log",
-        mac: "RoboArchitect -email /subject /body /config /passwordFile /log"
+        linux: "RoboArchitect -email /subject /body /config /passwordFile /log /logLevel",
+        windows: "RoboArchitect.exe -email /subject /body /config /passwordFile /log /logLevel",
+        mac: "RoboArchitect -email /subject /body /config /passwordFile /log /logLevel"
     },
     fields: [{
-            label: "Subject",
-            id: "subject",
-            type: "text",
-            visible: true,
-            attributes: {
-                type: "text",
-                id: "subject",
-                name: "subject",
-                placeholder: "Subject of a letter",
-                class: "form-control",
-                required: false,
-            },
-            helper: "Subject of an email."
-        },
-        {
-            label: "Body",
-            id: "body",
-            type: "text",
-            visible: true,
-            attributes: {
-                type: "textarea",
-                id: "body",
-                name: "body",
-                placeholder: "Text of an email with new lines \\n and tabs \\t.",
-                class: "form-control",
-                rows: 4,
-                required: false,
-            },
-            helper: "Body of an email. It could have new lines and tab characters. New line should be \\n and tab should be \\t."
-        },
-        {
             label: "Configuration file ",
             id: "config",
             type: "modal",
@@ -49,9 +18,9 @@ var email = {
                 id: "config",
                 name: "config",
                 required: true,
-                rows: 4,
+                rows: 20,
                 class: "form-control roboreadonly",
-                placeholder: "url=url\nuser=username\npassword=password"
+                placeholder: "Email Properties\nfromaddress=email@gmail.com\n# If you do not have an encrypted password file.\npassword=password\ntoaddress=emailTo@gmail.com\n# Optional.\nccaddress=copyEmail@xrpmail.com\n# Optional.\nbccaddress=sicretCopyEmail@enayu.com\nsubject=Here must be a subject of a letter.\n# If you want to send a message as HTML text you should pass Y else N.\nhtmlbody=Y\nbody=<h1> Here could be a text. </h1>\n# Optional.\nattachment=file.txt\nctype=TLS\nsmtpserver=smtp.gmail.com\nport=587\n# SSL -> port 465; TLS -> port 587."
             },
             subfields: [{
                     label: "From address",
