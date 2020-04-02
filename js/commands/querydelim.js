@@ -3,9 +3,9 @@ var querydelim = {
     id: "querydelim",
     description: "Allows a user to run SQL against a .csv/.txt file.",
     cmd: {
-        linux: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines /log",
-        windows: "RoboArchitect.exe -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines /log",
-        mac: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines	/log"
+        linux: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines /log /logLevel",
+        windows: "RoboArchitect.exe -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines /log /logLevel",
+        mac: "RoboArchitect -querydelim /srcFile /query /delim /destFile /suppressHeaders /skipLines /skipDataLines	/log /logLevel"
     },
     fields: [{
             label: "Source file",
@@ -168,7 +168,7 @@ var querydelim = {
                 placeholder: "logs.log",
                 class: "form-control",
                 required: false,
-                validate: ".*.log$",
+                pattern: ".*.log$",
             },
             helper: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file."
         },

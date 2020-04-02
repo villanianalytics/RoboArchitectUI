@@ -95,7 +95,7 @@ var jsonpath = {
                 placeholder: "logs.log",
                 class: "form-control",
                 required: false,
-                validate: ".*.log$",
+                pattern: ".*.log$",
             },
             helper: "File to which the program logs will be written. If this parameter is not specified, then all the logs will be written to the logs.log file."
         },
