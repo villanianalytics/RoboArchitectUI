@@ -19,5 +19,10 @@ $(document).ready(function () {
       createForm(command.id, command.fields, "forms");
       createFormSubmit(command.id, command.cmd);
     }
+    $(".roboreadonly").keydown(function (e) {
+      e.preventDefault();
+    });
   });
+
+
 });

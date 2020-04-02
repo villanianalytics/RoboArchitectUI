@@ -33,6 +33,7 @@ function createForm(formId, fields, idToAttach) {
         createModal(
           formId,
           field.id,
+          field.attributes,
           field.label,
           field.required,
           field.description,
@@ -76,18 +77,11 @@ function addOnChange(elementId, changeFields) {
   });
 }
 
-function createModal(formId, id, label, required, description, visible, subFields) {
+function createModal(formId, id, attributes, label, required, description, visible, subFields) {
   createDiv("div_" + id, "form-group", "#" + formId, required);
   createLabel(id, label, "#div_" + id);
   $("<textarea/>")
-    .attr({
-      id: id,
-      name: name,
-      required: required,
-      readonly: true,
-      rows: subFields.length,
-      class: "form-control"
-    })
+    .attr(attributes)
     .appendTo("#div_" + id);
 
   $("<br />").appendTo("#div_" + id);
@@ -112,11 +106,11 @@ function createModal(formId, id, label, required, description, visible, subField
     class: "modal fade",
     "aria-labelledby": label,
     "aria-hidden": "true"
-  }).appendTo("#div_" + id);
+  }).appendTo("#" + formId);
 
   createModalBody(id, label);
   createForm("form_" + id, subFields, "modalBody_" + id);
-  createModalSubmit("form_" + id, "form_" + id, "modal" + id, id);
+  createModalSubmit("form_" + id, "form_" + id, "modal_" + id, id);
 
   if (description) {
     createHelp(description, "div_" + id);
@@ -131,7 +125,7 @@ function createFileUpload(id, idToAttachm, label, textAreaId) {
   $("<input>").attr({
     type: "file",
     id: "fileupload_" + id,
-    style: "display: none;",
+    style: "display: none;,"
   }).appendTo("#" + idToAttachm);
 
   $("<button>").attr({
@@ -145,7 +139,7 @@ function createFileUpload(id, idToAttachm, label, textAreaId) {
   });
 
   $("#fileupload_" + id).on('change', function () {
-    fileChosen(this, $("#" + textAreaId));
+    fileChosen(id, this, $("#" + textAreaId));
   });
 }
 
@@ -158,12 +152,23 @@ function readTextFile(file, callback, encoding) {
   else reader.readAsText(file);
 }
 
-function fileChosen(input, output) {
+function fileChosen(modalId, input, output) {
   if (input.files && input.files[0]) {
     readTextFile(
       input.files[0],
       function (str) {
-        output.val(str);
+        var result = "";
+        var lines = str.split("\n");
+        lines.forEach(line => {
+          if (!line) return;
+          if (line.startsWith("#")) return;
+          var sLine = line.split("=");
+          var id = sLine[0];
+          var value = sLine[1];
+          $("#" + modalId + "_" + id).val(value);
+          result += id + "=" + value + "\n";
+        });
+        output.val(result);
       }
     );
   }
@@ -185,13 +190,19 @@ function createModalSubmit(id, idToAttach, modalId, textAreaId) {
 
   $("#" + id).submit(function (event) {
     event.preventDefault();
-    $("#" + textAreaId).val($(this).serialize().replace(/\&/g, "\n"));
+    var result = "";
+    $.each($(this).serializeArray(), function () {
+      if (this.value) {
+        result += this.name + "=" + this.value + "\n";
+      }
+    });
+    $("#" + textAreaId).val(result);
     $('#' + modalId).modal('toggle');
   });
 }
 
 function createModalBody(id, label) {
-  var html = '<div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">';
+  var html = '<div id="modal_' + id + '" class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">';
   html += '<div class="modal-header">';
   html += '<h5 class="modal-title">' + label + '</h5>';
   html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -217,18 +228,18 @@ function createFormSubmit(formId, commands) {
     var zip = new JSZip();
 
     if (output == "linux") {
-      generateCommandLinux(commands.linux, zip);
+      generateCommandLinux(formId, commands.linux, zip);
     } else if (output == 'windows') {
-      generateCommandWindows(commands.windows, zip);
+      generateCommandWindows(formId, commands.windows, zip);
     } else if (output == 'mac') {
-      generateCommandMac(commands.mac, zip);
+      generateCommandMac(formId, commands.mac, zip);
     }
 
     zip.generateAsync({
         type: "blob"
       })
       .then(function (content) {
-        saveAs(content, "command.zip");
+        saveAs(content, "RA" + formId + ".zip");
       });
   });
 }
@@ -245,7 +256,7 @@ function getCommand(commandLine, zip) {
     var ele = $("#" + comd.substr(1));
     if (ele && ele.val()) {
       if (ele.is("textarea")) {
-        zip.file(ele[0].id + ".txt", ele[0].val());
+        zip.file(ele[0].id + ".txt", ele[0].value);
         command.push(comd + '="' + ele[0].id + ".txt" + '"');
       } else {
         command.push(comd + '="' + ele.val() + '"');
@@ -256,17 +267,17 @@ function getCommand(commandLine, zip) {
   return command.join(" ");
 }
 
-function generateCommandLinux(commandLine, zip) {
+function generateCommandLinux(id, commandLine, zip) {
   var fileText = ["#! /bin/bash", getCommand(commandLine, zip)]
-  zip.file("command.sh", fileText.join("\n"));
+  zip.file("RA" + id + ".sh", fileText.join("\n"));
 }
 
-function generateCommandWindows(commandLine, zip) {
+function generateCommandWindows(id, commandLine, zip) {
   var fileText = ["@ECHO OFF", "Pushd \"%~dp0\"", getCommand(commandLine, zip), "popd", "PAUSE"]
-  zip.file("command.bat", fileText.join("\n"));
+  zip.file("RA" + id + ".cmd", fileText.join("\n"));
 }
 
-function generateCommandMac(commandLine, zip) {
+function generateCommandMac(id, commandLine, zip) {
   var fileText = ["#! /bin/bash", getCommand(commandLine, zip)]
-  zip.file("command.command", fileText.join("\n"));
+  zip.file("RA" + id + ".command", fileText.join("\n"));
 }
