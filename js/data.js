@@ -8,5 +8,7 @@ var data = [
   email,
   querydelim,
   sql,
-  unsql
+  unsql,
+  ftp,
+  sftp
 ];
