@@ -10,5 +10,6 @@ var data = [
   sql,
   unsql,
   ftp,
-  sftp
+  sftp,
+  hierarchy
 ];
