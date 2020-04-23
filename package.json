@@ -1,0 +1,19 @@
+{
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "Robo architect UI applications",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/villanianalytics/RoboArchitectUI",
+  "keywords": [
+    "RoboArchitect",
+    "RoboArchitectUI"
+  ],
+  "author": "villanianalytics",
+  "license": "",
+  "devDependencies": {
+    "electron": "^8.2.3"
+  }
+}
