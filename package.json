@@ -11,8 +11,11 @@
     "RoboArchitect",
     "RoboArchitectUI"
   ],
-  "author": "villanianalytics",
-  "license": "",
+  "author": {
+    "name": "Villani Analytics",
+    "email": "dvillani@villytics.com"
+  },
+  "license": "MIT",
   "devDependencies": {
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1"
