@@ -38,9 +38,7 @@
       "hardenedRuntime": false
     },
     "linux": {
-      "category": "Utility"
-    },
-    "dmg": {
+      "category": "Utility",
       "target": [
         "deb"
       ],
