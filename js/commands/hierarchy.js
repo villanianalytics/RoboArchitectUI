@@ -64,7 +64,7 @@ var hierarchy = {
                 text: "Parent-child"
             }],
             change: [{
-                value: ["lb"],
+                value: ["pc"],
                 showIds: ["totalAttrib"],
                 requiredIds: ["totalAttrib"]
             }],
@@ -74,14 +74,14 @@ var hierarchy = {
             label: "Total",
             id: "totalAttrib",
             type: "text",
-            visible: true,
+            visible: false,
             attributes: {
                 type: "text",
                 id: "totalAttrib",
                 name: "totalAttrib",
                 placeholder: "3",
                 class: "form-control",
-                required: true,
+                required: false,
             },
             helper: "Total number of attributes in Destination file. REQUIRED ONLY FOR LEVEL-BASED back to PARENT-CHILD conversion, int value i.e 7"
         },
@@ -129,14 +129,20 @@ var hierarchy = {
             },
             options: [{
                 attributes: {
-                    value: "N"
-                },
-                text: "No"
-            }, {
-                attributes: {
                     value: "Y"
                 },
                 text: "Yes"
+            },
+            {
+                attributes: {
+                    value: "N"
+                },
+                text: "No"
+            }],
+            change: [{
+                value: ["N"],
+                showIds: ["parentColIndex", "childColIndex"],
+                requiredIds: []
             }],
             helper: "If header is present in source file",
         },
@@ -159,7 +165,7 @@ var hierarchy = {
             label: "Parent column index",
             id: "parentColIndex",
             type: "text",
-            visible: true,
+            visible: false,
             attributes: {
                 type: "text",
                 id: "parentColIndex",
@@ -174,7 +180,7 @@ var hierarchy = {
             label: "Child column index",
             id: "childColIndex",
             type: "text",
-            visible: true,
+            visible: false,
             attributes: {
                 type: "text",
                 id: "childColIndex",
