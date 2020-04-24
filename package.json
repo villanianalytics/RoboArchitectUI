@@ -41,7 +41,10 @@
       "category": "Utility"
     },
     "dmg": {
-      "icon": false
+      "target": [
+        "deb"
+      ],
+      "icon": "build/linux.png"
     }
   }
 }
