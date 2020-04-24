@@ -16,5 +16,32 @@
   "devDependencies": {
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1"
+  },
+  "build": {
+    "productName": "Robo Architect UI",
+    "appId": "com.villanianalytics.RoboArchitectUI",
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "darkModeSupport": true,
+      "entitlements": "./build/entitlements.mac.plist",
+      "entitlementsInherit": "./build/entitlements.mac.plist",
+      "hardenedRuntime": false
+    },
+    "linux": {
+      "category": "Utility"
+    },
+    "dmg": {
+      "icon": false
+    }
   }
 }
