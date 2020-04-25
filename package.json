@@ -1,6 +1,6 @@
 {
   "name": "robo-architect-ui",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Robo architect UI applications",
   "main": "main.js",
   "scripts": {

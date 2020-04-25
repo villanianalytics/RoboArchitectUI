@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, nativeImage } = require('electron')
+const { app, BrowserWindow, nativeImage, Menu } = require('electron')
 const path = require('path')
 
 var image = nativeImage.createFromPath(__dirname + '/img/RoboArchitect.png');
@@ -18,7 +18,9 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+  mainWindow.setMenu(null)
 
+  //Menu.setApplicationMenu(false)
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
 }
@@ -40,6 +42,8 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
+
+app.dock.hide();
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
