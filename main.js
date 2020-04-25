@@ -43,7 +43,9 @@ app.on('activate', function () {
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
 
-app.dock.hide();
+if (process.platform === 'darwin') {
+  app.dock.hide();
+}
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
