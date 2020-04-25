@@ -39,8 +39,8 @@ jobs:
           #release: true
 
           windows_certs: ${{ secrets.RELEASE_KEYSTORE }}
-          windows_certs_password: ${{ secrets.RELEASE_KEYSTORE_PASS }}
+          windows_certs_password: ${{ secrets.RELEASE_PASS }}
 
           # macOS code signing certificate
           mac_certs: ${{ secrets.RELEASE_KEYSTORE }}
-          mac_certs_password: ${{ secrets.RELEASE_KEYSTORE_PASS }}
+          mac_certs_password: ${{ secrets.RELEASE_PASS }}
