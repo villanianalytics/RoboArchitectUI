@@ -11,5 +11,8 @@ var data = [
   unsql,
   ftp,
   sftp,
-  hierarchy
+  hierarchy,
+  compress,
+  decompress,
+  ferp
 ];
